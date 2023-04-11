@@ -1,0 +1,706 @@
+snippet snips "all snippets"
+/*
+beg
+debug()
+minimal
+minimalt
+msb
+for
+all
+{
+readn
+reads
+readv
+modular
+usaco
+gen
+parr
+ispalin
+sieve
+fenwick tree
+fileio
+amm
+mint
+dxdy
+ya
+yn
+floor
+ncrbf
+segtree
+matmul
+matpow
+dsu
+*/
+endsnippet
+
+snippet beg "template"
+//_armin
+#include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+
+using namespace std;
+using namespace __gnu_pbds;
+
+#define endl '\n'
+#define sz(x) (ll) x.size()
+#define fi first
+#define se second
+using ll = long long;
+using ld = long double;
+const int INF = 1000000000;
+
+template<typename T>
+using ordset = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+
+#ifdef ONPC
+#include "debug.h"
+#else
+#define deb(...) 
+#endif
+
+void solve() {
+	$0
+}
+
+int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+	int tt = 1;
+	cin >> tt;
+	for(int t = 0; t < tt; t++) {
+		//cout << "Case #" << t+1 << ": ";
+		solve();
+		cout << endl;
+		#ifdef ONPC
+			cout << "__________________________" << endl;
+		#endif
+	}
+
+		#ifdef ONPC
+			cerr << endl << "finished in " << (double)clock() / CLOCKS_PER_SEC << " sec" << endl;
+		#endif
+}
+
+endsnippet
+
+snippet debug() "Debgugging Macros"
+#define sim template < class c
+#define ris return * this
+#define dor > debug & operator <<
+#define eni(x) sim > typename \
+	enable_if<sizeof dud<c>(0) x 1, debug&>::type operator<<(c i) {
+sim > struct rge { c b, e; };
+sim > rge<c> range(c i, c j) { return rge<c>{i, j}; }
+sim > auto dud(c* x) -> decltype(cerr << *x, 0);
+sim > char dud(...);
+struct debug {
+#ifdef ONPC
+~debug() { cerr << endl; }
+eni(!=) cerr << boolalpha << i; ris; }
+eni(==) ris << range(begin(i), end(i)); }
+sim, class b dor(pair < b, c > d) {
+	ris << "(" << d.first << ", " << d.second << ")";
+}
+sim dor(rge<c> d) {
+	*this << "[";
+	for (auto it = d.b; it != d.e; ++it)
+	*this << ", " + 2 * (it == d.b) << *it;
+	ris << "]";
+}
+#else
+sim dor(const c&) { ris; }
+#endif
+};
+#define imie(...) " [" << #__VA_ARGS__ ": " << (__VA_ARGS__) << "] "
+
+endsnippet
+
+snippet minimal "minimalist begin"
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+using ld = long double;
+
+int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+	$0
+}
+endsnippet
+
+snippet minimalt "minimalist begin with test cases"
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+using ld = long double;
+
+void solve() {
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+	$0
+}
+
+int main(void) {
+	int tt;
+	cin >> tt;
+	while(tt--) {
+		solve();
+	}
+}
+endsnippet
+
+snippet msb "most significant bit"
+#define msb(x) (int) (31 - __builtin_clz(x))
+endsnippet
+
+snippet for "for loop"
+for(int ${1:i} = 0; $1 < ${2:n}; $1++) {
+	$0
+}
+endsnippet
+
+snippet all "allvec" i
+${1:nums}.begin(), $1.end()
+endsnippet
+
+snippet rn "read n"
+ll n; cin >> n;
+endsnippet
+
+snippet rs "read string"
+string s; cin >> s;
+endsnippet
+
+snippet rv "read vector"
+vector<ll> ${1:nums}(${2:n});
+for(int i = 0; i < $2; i++) {
+	cin >> $1[i];
+}
+endsnippet
+
+snippet modular "functions for modular arithmetic"
+ll madd(ll a, ll b) {
+	return (a + b) % mod;
+}
+ll msub(ll a, ll b) {
+	return (((a - b) % mod) + mod) % mod;
+}
+ll mmul(ll a, ll b) {
+	return ((a % mod) * (b % mod)) % mod;
+}
+ll mpow(ll base, ll exp) {
+	ll res = 1;
+	while (exp) {
+		if (exp % 2 == 1){
+			res = (res * base) % mod;
+		}
+		exp >>= 1;
+		base = (base * base) % mod;
+	}
+	return res;
+}
+ll minv(ll base) {
+	return mpow(base, mod - 2);
+}
+ll mdiv(ll a, ll b) {
+	return mmul(a, minv(b));
+}
+endsnippet
+
+snippet usaco "usaco extra"
+
+ofstream fout ("$1.out");
+ifstream fin ("$1.in");
+
+#ifndef ONPC
+#define cout fout
+#define cin fin
+#endif
+
+endsnippet
+
+snippet gen "generator tmp"
+#include <bits/stdc++.h>
+using namespace std;
+
+int rand(int a, int b) {
+	return a + rand() % (b - a + 1);
+}
+
+int main(void) {
+	srand(clock());
+
+	${0:int n = rand(1, 10);}
+}
+endsnippet
+
+snippet parr "print_array"
+for(auto &o : ${1:nums}) {	
+	cout << o << " ";
+}
+$0
+endsnippet
+
+snippet ispalin "palindrome checker for a string"
+bool ispalin(string &s) {
+	ll start = 0, end = s.size() - 1;
+
+	while(start <= end) {
+		if(s[start] != s[end]) {
+			return false;
+		}
+		
+		start++; end--;
+	}
+	return true;;
+}
+$0
+endsnippet
+
+snippet sieve "Sieve of Eratosthenes"
+void sieve(long long n) {
+	vector<bool> is_prime(n+1, true);
+	is_prime[0] = is_prime[1] = false;
+	for (int i = 2; i * i <= n; i++) {
+		if (is_prime[i]) {
+			for (int j = i * i; j <= n; j += i)
+				is_prime[j] = false;
+		}
+	}
+}
+$0
+endsnippet
+
+snippet fenwick "Fenwick Tree(BIT)"
+struct FT { // 1-indexed
+	vector<ll> bit;  // binary indexed tree
+	int n;
+
+	FT(int n) {
+		this->n = n + 1;
+		bit.assign(n + 1, 0);
+	}
+
+	FT(vector<ll> a)
+		: FT(a.size()) {
+		for (size_t i = 0; i < a.size(); i++)
+			add(i+1, a[i]);
+	}
+
+	ll sum(int idx) {
+		ll ret = 0;
+		for (++idx; idx > 0; idx -= idx & -idx)
+			ret += bit[idx];
+		return ret;
+	}
+
+	ll range_sum(int l, int r) {
+		return sum(r) - sum(l - 1);
+	}
+
+	void point_add(int idx, ll delta) {
+		for (++idx; idx < n; idx += idx & -idx)
+			bit[idx] += delta;
+	}
+	void range_add(int l, int r, ll val) {
+		add(l, val);
+		add(r + 1, -val);
+	}
+
+	ll point_query(int idx) {
+		ll ret = 0;
+		for (++idx; idx > 0; idx -= idx & -idx)
+			ret += bit[idx];
+		return ret;
+	}
+};
+endsnippet
+
+snippet fileio "fileio"
+ofstream fout ("$1.out");
+ifstream fin ("$1.in");
+endsnippet
+
+snippet amm "array min and max"
+template <typename T, typename T1, typename... Tail> T amin(T& a, T1 b, Tail... c) { if(b < a) a = b; if constexpr (sizeof...(c) != 0) { amin(a, c...); } return a; } template <typename T, typename T1, typename... Tail> T amax(T& a, T1 b, Tail... c) { if(b > a) a = b; if constexpr (sizeof...(c) != 0) { amax(a, c...); } return a; }
+endsnippet
+
+snippet mint "modular int"
+
+template <typename T>
+class Modular
+{
+public:
+	using Type = typename decay<decltype(T::value)>::type;
+
+	constexpr Modular() : value() {}
+	template <typename U>
+	Modular(const U &x)
+	{
+		value = normalize(x);
+	}
+
+	template <typename U>
+	static Type normalize(const U &x)
+	{
+		Type v;
+		if (-mod() <= x && x < mod())
+			v = static_cast<Type>(x);
+		else
+			v = static_cast<Type>(x % mod());
+		if (v < 0)
+			v += mod();
+		return v;
+	}
+
+	const Type &operator()() const { return value; }
+	template <typename U>
+	explicit operator U() const { return static_cast<U>(value); }
+	constexpr static Type mod() { return T::value; }
+
+	Modular &operator+=(const Modular &other)
+	{
+		if ((value += other.value) >= mod())
+			value -= mod();
+		return *this;
+	}
+	Modular &operator-=(const Modular &other)
+	{
+		if ((value -= other.value) < 0)
+			value += mod();
+		return *this;
+	}
+	template <typename U>
+	Modular &operator+=(const U &other) { return *this += Modular(other); }
+	template <typename U>
+	Modular &operator-=(const U &other) { return *this -= Modular(other); }
+	Modular &operator++() { return *this += 1; }
+	Modular &operator--() { return *this -= 1; }
+	Modular operator++(int32_t)
+	{
+		Modular result(*this);
+		*this += 1;
+		return result;
+	}
+	Modular operator--(int32_t)
+	{
+		Modular result(*this);
+		*this -= 1;
+		return result;
+	}
+	Modular operator-() const { return Modular(-value); }
+
+	template <typename U = T>
+	typename enable_if<is_same<typename Modular<U>::Type, int>::value, Modular>::type &operator*=(const Modular &rhs)
+	{
+#ifdef _WIN32
+		uint64_t x = static_cast<int64_t>(value) * static_cast<int64_t>(rhs.value);
+		uint32_t xh = static_cast<uint32_t>(x >> 32), xl = static_cast<uint32_t>(x), d, m;
+		asm(
+			"divl %4; \n\t"
+			: "=a"(d), "=d"(m)
+			: "d"(xh), "a"(xl), "r"(mod()));
+		value = m;
+#else
+		value = normalize(static_cast<int64_t>(value) * static_cast<int64_t>(rhs.value));
+#endif
+		return *this;
+	}
+	template <typename U = T>
+	typename enable_if<is_same<typename Modular<U>::Type, long long>::value, Modular>::type &operator*=(const Modular &rhs)
+	{
+		long long q = static_cast<long long>(static_cast<long double>(value) * rhs.value / mod());
+		value = normalize(value * rhs.value - q * mod());
+		return *this;
+	}
+	template <typename U = T>
+	typename enable_if<!is_integral<typename Modular<U>::Type>::value, Modular>::type &operator*=(const Modular &rhs)
+	{
+		value = normalize(value * rhs.value);
+		return *this;
+	}
+
+	Modular &operator/=(const Modular &other) { return *this *= Modular(inverse(other.value, mod())); }
+
+	friend const Type &abs(const Modular &x) { return x.value; }
+
+	template <typename U>
+	friend bool operator==(const Modular<U> &lhs, const Modular<U> &rhs);
+
+	template <typename U>
+	friend bool operator<(const Modular<U> &lhs, const Modular<U> &rhs);
+
+	template <typename V, typename U>
+	friend V &operator>>(V &stream, Modular<U> &number);
+
+private:
+	Type value;
+};
+
+template <typename T>
+bool operator==(const Modular<T> &lhs, const Modular<T> &rhs) { return lhs.value == rhs.value; }
+template <typename T, typename U>
+bool operator==(const Modular<T> &lhs, U rhs) { return lhs == Modular<T>(rhs); }
+template <typename T, typename U>
+bool operator==(U lhs, const Modular<T> &rhs) { return Modular<T>(lhs) == rhs; }
+
+template <typename T>
+bool operator!=(const Modular<T> &lhs, const Modular<T> &rhs) { return !(lhs == rhs); }
+template <typename T, typename U>
+bool operator!=(const Modular<T> &lhs, U rhs) { return !(lhs == rhs); }
+template <typename T, typename U>
+bool operator!=(U lhs, const Modular<T> &rhs) { return !(lhs == rhs); }
+
+template <typename T>
+bool operator<(const Modular<T> &lhs, const Modular<T> &rhs) { return lhs.value < rhs.value; }
+
+template <typename T>
+Modular<T> operator+(const Modular<T> &lhs, const Modular<T> &rhs) { return Modular<T>(lhs) += rhs; }
+template <typename T, typename U>
+Modular<T> operator+(const Modular<T> &lhs, U rhs) { return Modular<T>(lhs) += rhs; }
+template <typename T, typename U>
+Modular<T> operator+(U lhs, const Modular<T> &rhs) { return Modular<T>(lhs) += rhs; }
+
+template <typename T>
+Modular<T> operator-(const Modular<T> &lhs, const Modular<T> &rhs) { return Modular<T>(lhs) -= rhs; }
+template <typename T, typename U>
+Modular<T> operator-(const Modular<T> &lhs, U rhs) { return Modular<T>(lhs) -= rhs; }
+template <typename T, typename U>
+Modular<T> operator-(U lhs, const Modular<T> &rhs) { return Modular<T>(lhs) -= rhs; }
+
+template <typename T>
+Modular<T> operator*(const Modular<T> &lhs, const Modular<T> &rhs) { return Modular<T>(lhs) *= rhs; }
+template <typename T, typename U>
+Modular<T> operator*(const Modular<T> &lhs, U rhs) { return Modular<T>(lhs) *= rhs; }
+template <typename T, typename U>
+Modular<T> operator*(U lhs, const Modular<T> &rhs) { return Modular<T>(lhs) *= rhs; }
+
+template <typename T>
+Modular<T> operator/(const Modular<T> &lhs, const Modular<T> &rhs) { return Modular<T>(lhs) /= rhs; }
+template <typename T, typename U>
+Modular<T> operator/(const Modular<T> &lhs, U rhs) { return Modular<T>(lhs) /= rhs; }
+template <typename T, typename U>
+Modular<T> operator/(U lhs, const Modular<T> &rhs) { return Modular<T>(lhs) /= rhs; }
+
+template <typename T, typename U>
+Modular<T> power(const Modular<T> &a, const U &b)
+{
+	assert(b >= 0);
+	Modular<T> x = a, res = 1;
+	U p = b;
+	while (p > 0)
+	{
+		if (p & 1)
+		res *= x;
+		x *= x;
+		p >>= 1;
+	}
+	return res;
+}
+
+template <typename T>
+bool IsZero(const Modular<T> &number)
+{
+	return number() == 0;
+}
+
+template <typename T>
+string to_string(const Modular<T> &number)
+{
+	return to_string(number());
+}
+
+// U == std::ostream? but done this way because of fastoutput
+template <typename U, typename T>
+U &operator<<(U &stream, const Modular<T> &number)
+{
+	return stream << number();
+}
+
+// U == std::istream? but done this way because of fastinput
+template <typename U, typename T>
+U &operator>>(U &stream, Modular<T> &number)
+{
+	typename common_type<typename Modular<T>::Type, long long>::type x;
+	stream >> x;
+	number.value = Modular<T>::normalize(x);
+	return stream;
+}
+
+/*
+using ModType = int32_t;
+
+struct VarMod { static ModType value; };
+ModType VarMod::value;
+ModType& md = VarMod::value;
+using Mint = Modular<VarMod>;
+*/
+
+constexpr int32_t md = (int32_t)1e9 + 7;
+using Mint = Modular<std::integral_constant<decay<decltype(md)>::type, md>>;
+
+endsnippet
+
+snippet dxdy "dxdy"
+vector<int> dx = {1, -1, 0, 0}, dy = {0, 0, 1, -1};
+endsnippet
+
+snippet ya "cout yes"
+cout << "YES\n";
+endsnippet
+
+snippet na "cout no"
+cout << "NO\n";
+endsnippet
+
+snippet floor "accurate floor"
+ll accurateFloor(ll a, ll b) {
+	ll val = a / b;
+	while (val * b > a)
+		val--;
+	return val;
+}
+endsnippet
+
+snippet ncrbf "ncr in O(r)"
+ll ncr(ll n, ll r) {
+	ll res = 1;
+	if(r > n - r) r = n - r;
+	
+	for(int i = 0; i < k; i++) {
+		res *= (n-i); res /= i+1; 
+	}
+
+	res;
+}
+endsnippet
+
+snippet segtree "segment tree"
+template <typename T>
+struct segtree {
+	int n;
+	vector<T> t;
+
+	segtree(int N) : n(N), t(4*N, 0) {}
+
+	void build(vector<T> a, int v, int tl, int tr) {
+		if (tl == tr) {
+			t[v] = a[tl];
+		} else {
+			int tm = (tl + tr) / 2;
+			build(a, v*2, tl, tm);
+			build(a, v*2+1, tm+1, tr);
+			t[v] = t[v*2] + t[v*2+1];
+		}
+	}
+
+	void build(vector<T>& a) {
+		build(a, 1, 0, n-1);
+	}
+
+	T sum(int v, int tl, int tr, int l, int r) {
+		if (l > r) 
+			return 0;
+		if (l == tl && r == tr) {
+			return t[v];
+		}
+		int tm = (tl + tr) / 2;
+		return sum(v*2, tl, tm, l, min(r, tm))
+			+ sum(v*2+1, tm+1, tr, max(l, tm+1), r);
+	}
+
+	T sum(int l, int r) {
+		return sum(1, 0, n-1, l, r);
+	}
+
+	void update(int v, int tl, int tr, int pos, int new_val) {
+		if (tl == tr) {
+			t[v] = new_val;
+		} else {
+			int tm = (tl + tr) / 2;
+			if (pos <= tm)
+				update(v*2, tl, tm, pos, new_val);
+			else
+				update(v*2+1, tm+1, tr, pos, new_val);
+			t[v] = t[v*2] + t[v*2+1];
+		}
+	}
+
+	void update(int pos, int new_val) {
+		update(1, 0, n-1, pos, new_val);
+	}
+};
+endsnippet
+
+snippet matmul "matrix multiplication"
+vector<vector<ll>> mat_mul(vector<vector<ll>> a, vector<vector<ll>> b, ll mod) {
+	// matrix multiplication
+	int n = a.size();
+	vector<vector<ll>> res(n, vector<ll>(n));
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			for (int k = 0; k < n; k++) {
+				res[i][j] += a[i][k] * b[k][j];
+				res[i][j] %= mod;
+			}
+		}
+	}
+	return res;
+}
+endsnippet 
+
+snippet matpow "matrix exponentiatioin"
+vector<vector<ll>> mat_pow(vector<vector<ll>> a, ll b, ll mod) {
+	// Matrix exponentiation
+	int n = a.size();
+	vector<vector<ll>> res(n, vector<ll>(n));
+	for (int i = 0; i < n; i++) res[i][i] = 1;
+	while (b) {
+		if (b & 1) res = mat_mul(res, a, mod);
+		a = mat_mul(a, a, mod);
+		b >>= 1;
+	}
+	return res;
+}
+endsnippet
+
+snippet dsu "disjoint set union"
+struct DSU {
+    vector<int> parent, rank, siz;
+    int c;
+
+    DSU(int n) : parent(n+1), rank(n+1, 0), siz(n+1, 1), c(n) {
+        for(int i = 1; i <= n; i++) parent[i] = i;
+    }
+
+    int find_set(int v) {
+        if (v == parent[v])
+            return v;
+        return parent[v] = find_set(parent[v]);
+    }
+
+    void make_set(int v) {
+        parent[v] = v;
+        rank[v] = 0;
+    }
+
+    int get_size(int v) {
+        return siz[find_set(v)];
+    }
+
+    void union_sets(int a, int b) {
+        a = find_set(a);
+        b = find_set(b);
+        if (a != b) {
+            c--;
+            if (rank[a] < rank[b])
+                swap(a, b);
+            parent[b] = a;
+            siz[a] += siz[b];
+            if (rank[a] == rank[b])
+                rank[a]++;
+        }
+    }
+};
+endsnippet
